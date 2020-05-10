@@ -9,8 +9,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var fetchObj = CovidFetchRequest()
     var body: some View {
-        Text("Hello, World!")
+        Text("\(fetchObj.totalCount.confirmed)")
     }
 }
 
