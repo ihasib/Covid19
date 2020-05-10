@@ -27,14 +27,14 @@ class CovidFetchRequest: ObservableObject {
             if let result = response.data {
                 let json = JSON(result)
                 print(json)
-                let confirmed = json[0]["confirmed"].intValue
-                let recovered = json[0]["recovered"].intValue
-                let critical = json[0]["critical"].intValue
-                let deaths = json[0]["deaths"].intValue
-                let lastChange = json[0]["lastChange"].intValue
-                let lastUpdate = json[0]["lastUpdate"].intValue
+                let confirmed = json[0][TotalCount.self.CodingKeys.confirmed.rawValue].intValue
+                let recovered = json[0][TotalCount.self.CodingKeys.recovered.rawValue].intValue
+                let critical = json[0][TotalCount.self.CodingKeys.critical.rawValue].intValue
+                let deaths = json[0][TotalCount.self.CodingKeys.deaths.rawValue].intValue
+                let lastChange = json[0][TotalCount.self.CodingKeys.lastChange.rawValue].intValue
+                let lastUpdate = json[0][TotalCount.self.CodingKeys.lastUpdate.rawValue].intValue
                 
-                self.totalCount = TotalCount(confirmed: confirmed, critical: critical, deaths: deaths, lastChange: lastChange, lastUpdate: lastUpdate, recovered: recovered)
+                self.totalCount = TotalCount(confirmed: confirmed, recovered: recovered, critical: critical, deaths: deaths, lastChange: lastChange, lastUpdate: lastUpdate)
             } else {
                 self.totalCount =  testTotalCount
                 print("data acquisition failed, dummy data provided")

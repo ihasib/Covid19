@@ -10,11 +10,11 @@ import Foundation
 
 struct TotalCount {
     let confirmed: Int
+    let recovered: Int
     let critical: Int
     let deaths: Int
     let lastChange: Int
     let lastUpdate: Int
-    let recovered: Int
     
     var fatalityRate: Double {
         return 100.0 * Double(deaths) / Double(confirmed)
@@ -23,6 +23,22 @@ struct TotalCount {
     var recoveryRate: Double {
         return 100.0 * Double(recovered) / Double(confirmed)
     }
+    
+    enum CodingKeys: String {
+        case confirmed = "confirmed"
+        case recovered = "recovered"
+        case critical = "critical"
+        case deaths = "deaths"
+        case lastChange = "lastChange"
+        case lastUpdate = "lastUpdate"
+    }
+}
+
+enum CodingKeys: String {
+    case confirmed = "confirmed"
+    case recovered = "recovered"
+    case critical = "critical"
+    case deaths = "deaths"
 }
 
 struct CountryData {
@@ -45,4 +61,4 @@ struct CountryData {
     }
 }
 
-let testTotalCount = TotalCount(confirmed: 100, critical: 100, deaths: 100, lastChange: 100, lastUpdate: 100, recovered: 100)
+let testTotalCount = TotalCount(confirmed: 100, recovered: 100, critical: 100, deaths: 100, lastChange: 100, lastUpdate: 100)
