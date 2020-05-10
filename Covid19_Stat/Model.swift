@@ -8,6 +8,22 @@
 
 import Foundation
 
+
+enum CodingKeys: String {
+    case name = "name"
+    case country = "country"
+    case confirmed = "confirmed"
+    case recovered = "recovered"
+    case critical = "critical"
+    case deaths = "deaths"
+    case alpha2code = "alpha2code"
+    case alpha3code = "alpha3code"
+    case latitude = "latitude"
+    case longitude = "longitude"
+    case lastChange = "lastChange"
+    case lastUpdate = "lastUpdate"
+}
+
 struct TotalCount {
     let confirmed: Int
     let recovered: Int
@@ -23,15 +39,6 @@ struct TotalCount {
     var recoveryRate: Double {
         return 100.0 * Double(recovered) / Double(confirmed)
     }
-    
-    enum CodingKeys: String {
-        case confirmed = "confirmed"
-        case recovered = "recovered"
-        case critical = "critical"
-        case deaths = "deaths"
-        case lastChange = "lastChange"
-        case lastUpdate = "lastUpdate"
-    }
 }
 
 struct Country {
@@ -40,14 +47,18 @@ struct Country {
     let alpha3code: String
     let latitude: Double
     let longitude: Double
-    
-    enum CodingKeys: String {
-        case name = "name"
-        case alpha2code = "alpha2code"
-        case alpha3code = "alpha3code"
-        case latitude = "latitude"
-        case longitude = "longitude"
-    }
+}
+
+struct CountryLatestUpdate {
+    let country: String
+    let confirmed: Int64
+    let recovered: Int64
+    let critical: Int64
+    let deaths: Int64
+    let latitude: Double
+    let longitude: Double
+    let lastChange: Int64
+    let lastUpdate: Int64
 }
 
 let testTotalCount = TotalCount(confirmed: 100, recovered: 100, critical: 100, deaths: 100, lastChange: 100, lastUpdate: 100)
