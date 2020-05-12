@@ -22,8 +22,8 @@ class CovidFetchRequest: ObservableObject {
     init() {
         getCurrentTotal();
         sleep(4)//probably server allows me to hit at most once per 2 to 4 seconds, without this force delay data will be fetched only for first api
-        getAllCountryList();
-        sleep(4)
+        //getAllCountryList();
+        //sleep(10)
         getAllCountryLatestData()
     }
     
@@ -74,21 +74,23 @@ class CovidFetchRequest: ObservableObject {
     func getAllCountryLatestData() {
         AF.request("https://covid-19-data.p.rapidapi.com/country/all?format=json", headers: headers).responseJSON { response in
             if let result = response.value {
-                let jsonCountries = result as! [Dictionary<String, AnyObject>]
+                let jsonCountries = result as? [Dictionary<String, AnyObject>]
                 var countries: [CountryLatestUpdate] = []
-                for jsonCountry in jsonCountries {
-                    let country = jsonCountry[CodingKeys.country.rawValue] as? String ?? "NIL"
-                    let confirmed = jsonCountry[CodingKeys.confirmed.rawValue] as? Int64 ?? 0
-                    let recovered = jsonCountry[CodingKeys.recovered.rawValue] as? Int64 ?? 0
-                    let critical = jsonCountry[CodingKeys.critical.rawValue] as? Int64 ?? 0
-                    let deaths = jsonCountry[CodingKeys.deaths.rawValue] as? Int64 ?? 0
-                    let lastChange = jsonCountry[CodingKeys.lastChange.rawValue] as? Int64 ?? 0
-                    let lastUpdate = jsonCountry[CodingKeys.lastUpdate.rawValue] as? Int64 ?? 0
-                    let latitude = jsonCountry[CodingKeys.latitude.rawValue] as? Double ?? 0.0
-                    let longitude = jsonCountry[CodingKeys.longitude.rawValue] as? Double ?? 0.0
-                    
-                    let countryLatestUpdate = CountryLatestUpdate(country: country, confirmed: confirmed, recovered: recovered, critical: critical, deaths: deaths, latitude: latitude, longitude: longitude, lastChange: lastChange, lastUpdate: lastUpdate)
-                    countries.append(countryLatestUpdate)
+                if let jsonCountries = jsonCountries {
+                    for jsonCountry in jsonCountries {
+                        let country = jsonCountry[CodingKeys.country.rawValue] as? String ?? "NIL"
+                        let confirmed = jsonCountry[CodingKeys.confirmed.rawValue] as? Int64 ?? 0
+                        let recovered = jsonCountry[CodingKeys.recovered.rawValue] as? Int64 ?? 0
+                        let critical = jsonCountry[CodingKeys.critical.rawValue] as? Int64 ?? 0
+                        let deaths = jsonCountry[CodingKeys.deaths.rawValue] as? Int64 ?? 0
+                        let lastChange = jsonCountry[CodingKeys.lastChange.rawValue] as? Int64 ?? 0
+                        let lastUpdate = jsonCountry[CodingKeys.lastUpdate.rawValue] as? Int64 ?? 0
+                        let latitude = jsonCountry[CodingKeys.latitude.rawValue] as? Double ?? 0.0
+                        let longitude = jsonCountry[CodingKeys.longitude.rawValue] as? Double ?? 0.0
+                        
+                        let countryLatestUpdate = CountryLatestUpdate(country: country, confirmed: confirmed, recovered: recovered, critical: critical, deaths: deaths, latitude: latitude, longitude: longitude, lastChange: lastChange, lastUpdate: lastUpdate)
+                        countries.append(countryLatestUpdate)
+                    }
                 }
                 self.countriesWithLatestUpdate = countries.sorted(by: {$0.confirmed > $1.confirmed} )
                 print("");
